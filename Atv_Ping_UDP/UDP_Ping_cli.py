@@ -21,6 +21,11 @@ port = int(port)
 # Sequence number of the ping message
 seqNum = 0
 
+RTTall = []
+timeouts = 0
+RTTmax = 0
+RTTmin = 0
+RTTmed = 0
 # Ping for 10 times
 while seqNum < 10:
   seqNum += 1
@@ -35,7 +40,7 @@ while seqNum < 10:
     clientSocket.sendto(data.encode(), (host, port))
     # Receive the server response
     #/**/ /* 3. Recebe o reply do servidor */
-    message, address = clientSocket.recvfrom(1024)
+    message, address = clientSocket.recvfrom(2048)
 
     # Received time
     RTTr = time.time()
@@ -43,13 +48,28 @@ while seqNum < 10:
     print("Reply from " + address[0] + ": " + message.decode())       
     # Round trip time is the difference between sent and received time
     #/**/ /* 4. Apresenta o RTT na tela */
-    print("RTT: " + str(RTTr - RTTs))
+    RTTa = (RTTr - RTTs)
+    print("RTT: " + str(RTTa))
+    RTTall.append(RTTa)
 
   except:
     # Server does not respond
     # Assume the packet is lost
     print ("Request", seqNum,"timed out.")
+    timeouts += 1
     continue
+
+RTTmax = max(RTTall)
+RTTmin = min(RTTall)
+
+RTTmed = sum(RTTall) / len(RTTall)
+
+print("RTT minímo: " + str(RTTmin) + 
+"\nRTT máximo: " + str(RTTmax) +
+"\nRTT médio:  " + str(RTTmed))
+
+taxLost = (timeouts/10) * 100
+print("Taxa de perda de pacotes: " + str(taxLost) + " %")
 
 # Close the client socket
 #/**/ /* 5. Fecha o socket */

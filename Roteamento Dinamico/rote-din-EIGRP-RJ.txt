@@ -1,0 +1,72 @@
+Router-RJ
+
+Router#show ip protocols
+
+Routing Protocol is "eigrp  90 " 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Default networks flagged in outgoing updates  
+  Default networks accepted from incoming updates 
+  EIGRP metric weight K1=1, K2=0, K3=1, K4=0, K5=0
+  EIGRP maximum hopcount 100
+  EIGRP maximum metric variance 1
+Redistributing: eigrp 90
+  Automatic network summarization is in effect  
+  Automatic address summarization: 
+  Maximum path: 4
+  Routing for Networks:  
+     172.16.0.0
+  Routing Information Sources:  
+    Gateway         Distance      Last Update 
+    172.16.100.2    90            2321856    
+  Distance: internal 90 external 170
+
+Router#show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     172.16.0.0/24 is subnetted, 8 subnets
+C       172.16.10.0 is directly connected, FastEthernet0/0
+C       172.16.20.0 is directly connected, FastEthernet0/1
+D       172.16.30.0 [90/20514560] via 172.16.100.2, 00:02:03, Serial0/0
+D       172.16.40.0 [90/20514560] via 172.16.100.2, 00:02:03, Serial0/0
+D       172.16.50.0 [90/21026560] via 172.16.100.2, 00:01:29, Serial0/0
+D       172.16.60.0 [90/21026560] via 172.16.100.2, 00:01:29, Serial0/0
+C       172.16.100.0 is directly connected, Serial0/0
+D       172.16.200.0 [90/21024000] via 172.16.100.2, 00:02:03, Serial0/0
+
+Router#show ip eigrp neighbor
+IP-EIGRP neighbors for process 90
+H   Address         Interface      Hold Uptime    SRTT   RTO   Q   Seq
+                                   (sec)          (ms)        Cnt  Num
+0   172.16.100.2    Se0/0          11   00:02:09  40     1000  0   9
+
+Router#show ip eigrp topology
+IP-EIGRP Topology Table for AS 90/ID(172.16.100.1)
+
+Codes: P - Passive, A - Active, U - Update, Q - Query, R - Reply,
+       r - Reply status
+
+P 172.16.10.0/24, 1 successors, FD is 28160
+         via Connected, FastEthernet0/0
+P 172.16.20.0/24, 1 successors, FD is 28160
+         via Connected, FastEthernet0/1
+P 172.16.30.0/24, 1 successors, FD is 20514560
+         via 172.16.100.2 (20514560/28160), Serial0/0
+P 172.16.40.0/24, 1 successors, FD is 20514560
+         via 172.16.100.2 (20514560/28160), Serial0/0
+P 172.16.50.0/24, 1 successors, FD is 21026560
+         via 172.16.100.2 (21026560/20514560), Serial0/0
+P 172.16.60.0/24, 1 successors, FD is 21026560
+         via 172.16.100.2 (21026560/20514560), Serial0/0
+P 172.16.100.0/24, 1 successors, FD is 20512000
+         via Connected, Serial0/0
+P 172.16.200.0/24, 1 successors, FD is 21024000
+         via 172.16.100.2 (21024000/20512000), Serial0/0
